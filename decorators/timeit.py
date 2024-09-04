@@ -1,16 +1,26 @@
 import time
+import numpy as np
 from loguru import logger
 
-def timeit(f):
+from et.utils.pretty_print import color
 
+
+def timeit(f, trials=1):
     def timed(*args, **kw):
-
-        ts = time.time()
-        result = f(*args, **kw)
-        te = time.time()
-
-        logger.debug('func:%r args:[%r, %r] took: %2.4f sec' % \
-          (f.__name__, args, kw, te-ts))
+        result, times = None, []
+        for _ in range(trials):
+            ts = time.time()
+            result = f(*args, **kw) if result is None else result
+            te = time.time()
+            times.append(te - ts)
+        mean, var, median = np.mean(times), np.var(times), np.median(times)
+        logger \
+            .opt(colors=True) \
+            .debug(f"{color.END}func: {color.BOLD + color.GREEN}{f.__name__}{color.END * 2} "
+                   f"| args: [{args}, {kw}]{'':<10}"
+                   f"trials: {color.BOLD}{trials}{color.END} "
+                   f"| mean: {color.BOLD + color.RED}{mean:.3f} {color.PLUSMINUS} {var:.2f}s{color.END * 2} "
+                   f"| median: {color.BOLD + color.BLUE}{median:.3f}s{color.END * 2}")
         return result
 
     return timed
