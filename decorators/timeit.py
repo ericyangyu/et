@@ -20,7 +20,7 @@ def timeit(f, trials=1):
             .debug(f"{color.END}func: {color.BOLD + color.GREEN}{f.__name__}{color.END * 2} "
                    # f"| args: [{args}, {kw}]{'':<10}"  # Comment for now, it is unsafe. 
                    f"| trials: {color.BOLD}{trials}{color.END} "
-                   f"| mean: {color.BOLD + color.RED}{mean:.3f} {color.PLUSMINUS} {var:.2f}s{color.END * 2} "
+                   f"| mean: {color.BOLD + color.RED}{mean:.3f}s {color.PLUSMINUS} {var:.2f}s{color.END * 2} "
                    f"| median: {color.BOLD + color.BLUE}{median:.3f}s{color.END * 2}")
         return result
 
