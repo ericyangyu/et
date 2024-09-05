@@ -17,5 +17,6 @@ def xavier_init(key: jax.random.PRNGKey, n_in: int, n_out: int, xavier_type: str
     xavier_type : str
         Type of Xavier initialization. Can be 'normal' or 'uniform'.
     """
+    assert xavier_type in ['normal', 'uniform'], f"Invalid Xavier type: {xavier_type}. Must be 'normal' or 'uniform'."
     numer = 2 if xavier_type == 'normal' else 6  # 2 for normal, 6 for uniform
     return jax.random.normal(key, (n_in, n_out)) * jnp.sqrt(numer / (n_in + n_out))
