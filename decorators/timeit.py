@@ -2,7 +2,7 @@ import time
 import numpy as np
 from loguru import logger
 
-from ebm_toy.et.utils.pretty_print import color
+from et.utils.pretty_print import color
 
 
 def timeit(f, trials=1):
