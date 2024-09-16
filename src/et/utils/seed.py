@@ -7,7 +7,7 @@ from typing import List
 from gymnasium import Env
 
 
-def set_seed(seed: int = 0, use_torch=False) -> None:
+def set_seed(seed: int = 0, use_torch: bool = False) -> None:
     """
     https://wandb.ai/sauravmaheshkar/RSNA-MICCAI/reports/How-to-Set-Random-Seeds-in-PyTorch-and-Tensorflow--VmlldzoxMDA2MDQy
     """
@@ -33,4 +33,5 @@ def set_env_seed(env: Env | List[Env], seed: int):
     for _env in env:
         _env.reset(seed=seed)
         _env.action_space.seed(seed)
+    logger.info(f"Fixed env seed to {seed}")
 
