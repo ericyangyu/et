@@ -1,0 +1,20 @@
+[project]
+name = "et"
+authors = [
+    {name = "Eric Yu", email = "erict12321@gmail.com"},
+]
+dependencies = [
+    "jax",
+    "jaxtyping",
+    "loguru",
+    "gymnasium"
+]
+dynamic = ["version"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.isort]
+profile = "black"
+known_first_party = [""]
