@@ -7,7 +7,8 @@ dependencies = [
     "jax",
     "jaxtyping",
     "loguru",
-    "gymnasium"
+    "gymnasium",
+    "ffmpeg-python"
 ]
 dynamic = ["version"]
 

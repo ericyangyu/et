@@ -1,5 +1,6 @@
 import numpy as np
 import ffmpeg
+import matplotlib
 
 
 def make_video(frames: list, save_path, num_secs: int, framerate: int = 60):
@@ -44,4 +45,20 @@ def make_video(frames: list, save_path, num_secs: int, framerate: int = 60):
     fps = min(max(len(frames) // num_secs, 1), framerate)
     vidwrite(save_path, frames, framerate=fps)
 
+def extract_frame(fig: matplotlib.figure.Figure) -> np.ndarray:
+    """
+    Extract a frame from a canvas.
 
+    Parameters
+    ----------
+    fig : matplotlib.figure.Figure
+        Figure to extract the frame from.
+
+    Returns
+    -------
+    np.ndarray
+        RGB image frame extracted from the canvas as a numpy array.
+    """
+    fig.canvas.draw()
+    width, height = (fig.get_size_inches() * fig.get_dpi()).astype(np.int32)
+    return np.fromstring(fig.canvas.tostring_rgb(), dtype='uint8').reshape(height, width, 3)
