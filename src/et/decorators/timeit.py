@@ -14,7 +14,6 @@ def timeit(f, trials=1):
             te = time.time()
             times.append(te - ts)
         mean, var, median = np.mean(times), np.var(times), np.median(times)
-        print(args)
         logger \
             .opt(colors=True) \
             .debug(f"{color.END}func: {color.BOLD + color.GREEN}{f.__name__}{color.END * 2} "
