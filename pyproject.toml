@@ -9,7 +9,8 @@ dependencies = [
     "loguru",
     "gymnasium",
     "pyyaml",
-    "dotwiz"
+    "dotwiz",
+    "ffmpeg-python"
 ]
 dynamic = ["version"]
 
