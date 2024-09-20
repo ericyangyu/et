@@ -7,7 +7,9 @@ dependencies = [
     "jax",
     "jaxtyping",
     "loguru",
-    "gymnasium"
+    "gymnasium",
+    "pyyaml",
+    "dotwiz"
 ]
 dynamic = ["version"]
 
