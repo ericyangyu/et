@@ -3,7 +3,7 @@ import ffmpeg
 import matplotlib
 
 
-def make_video(frames: list, save_path, num_secs: int, framerate: int = 60):
+def make_video(frames: list, save_path, fps: int = 60):
     """
     Make a video from a list of frames (RGB images).
 
@@ -42,7 +42,6 @@ def make_video(frames: list, save_path, num_secs: int, framerate: int = 60):
         process.stdin.close()
         process.wait()
 
-    fps = min(max(len(frames) // num_secs, 1), framerate)
     vidwrite(save_path, frames, framerate=fps)
 
 def extract_frame(fig: matplotlib.figure.Figure) -> np.ndarray:

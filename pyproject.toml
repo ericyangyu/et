@@ -4,7 +4,6 @@ authors = [
     {name = "Eric Yu", email = "erict12321@gmail.com"},
 ]
 dependencies = [
-    "jax",
     "jaxtyping",
     "loguru",
     "gymnasium",
