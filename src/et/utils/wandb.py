@@ -20,9 +20,9 @@ def setup_wandb_run(run: Run, postfix: str = None):
     -------
     None
     """
-    # Make sure that there are no slashes in the postfix
-    if postfix and "/" in postfix:
-        raise ValueError(f"The postfix cannot contain any slashes: {postfix}")
+    # # Make sure that there are no slashes in the postfix
+    # if postfix and "/" in postfix:
+    #     raise ValueError(f"The postfix cannot contain any slashes: {postfix}")
 
     date = time.strftime("%m.%d-%H:%M")
     run_dir = name = f"{date}-{run.id}"

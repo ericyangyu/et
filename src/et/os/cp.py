@@ -43,6 +43,12 @@ def symlink(src, dst):
     -------
     None
     """
+    src, dst = os.path.abspath(src), os.path.abspath(dst)
+    # Remove current symlink if it exists
     if os.path.exists(dst):
-        os.remove(os.path.abspath(dst))
+        shutil.rmtree(dst, ignore_errors=True)
+    try:
+        os.unlink(dst)
+    except:
+        pass
     os.symlink(os.path.abspath(src), os.path.abspath(dst), target_is_directory=os.path.isdir(src))

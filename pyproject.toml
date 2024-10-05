@@ -4,9 +4,7 @@ authors = [
     {name = "Eric Yu", email = "erict12321@gmail.com"},
 ]
 dependencies = [
-    "jaxtyping",
     "loguru",
-    "gymnasium",
     "pyyaml",
     "dotwiz",
     "ffmpeg-python"
