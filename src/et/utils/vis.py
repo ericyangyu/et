@@ -1,6 +1,43 @@
+from typing import Tuple
+
 import numpy as np
 import ffmpeg
 import matplotlib
+
+
+def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_secs: int) -> Tuple[int, int]:
+    """
+    Recommend an iteration stepsize and framerate for a video. Minimum 1 fps. This should be used like
+    ```
+    iter_stepsize, fps = recommend_fps(num_iterations, 10, 5, 10)
+    for i in range(iter_stepsize, num_iterations + iter_stepsize, iter_stepsize):
+        subset_data = data[:i]
+        ...
+    make_video(frames, 'video.mp4', fps=fps)
+    ```
+
+    Parameters
+    ----------
+    num_potential_frames : int
+        Number of potential frames that will be in the video.
+    num_desired_frames : int
+        Number of desired frames in the video.
+    min_secs : int
+        Minimum number of seconds the video should be.
+    max_secs : int
+        Maximum number of seconds the video should be.
+
+    Returns
+    -------
+    int
+        Recommended framerate for the video.
+    """
+    assert num_potential_frames >= num_desired_frames, "Number of potential frames should be greater than the number of desired frames."
+    assert num_desired_frames > 0, "Number of desired frames should be greater than 0."
+
+    iter_stepsize = num_potential_frames // num_desired_frames
+    fps = max(1, min(num_desired_frames // min_secs, num_desired_frames // max_secs))
+    return iter_stepsize, fps
 
 
 def make_video(frames: list, save_path, fps: int = 60):
