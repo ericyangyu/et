@@ -1,11 +1,29 @@
-from typing import Tuple
-
 import numpy as np
 import ffmpeg
 import matplotlib
 
+from loguru import logger
+from typing import Tuple
+from moviepy.editor import VideoFileClip
 
-def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_secs: int) -> Tuple[int, int]:
+
+def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
+    """
+    Convert an mp4 video to a gif.
+
+    Parameters
+    ----------
+    mp4_path : str
+        Path to the mp4 video.
+    gif_path : str
+        Path to save the gif.
+    """
+    if gif_path is None:
+        gif_path = mp4_path.replace('.mp4', '.gif')
+    ffmpeg.input(mp4_path).output(gif_path).run()
+    logger.info(f'Converted {mp4_path} to {gif_path}.')
+
+def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_secs: int) -> Tuple[int, int, int]:
     """
     Recommend an iteration stepsize and framerate for a video. Minimum 1 fps. This should be used like
     ```
@@ -15,6 +33,10 @@ def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_s
         ...
     make_video(frames, 'video.mp4', fps=fps)
     ```
+
+    Note that if the number of desired frames is not easy to compute given the number of potential frames, then we
+    overestimate (e.g. for 15 potential frames and 10 desired frames, the stepsize is 2 and number of collected frames
+    is ceil(15/2) = 8, which is less than 10).
 
     Parameters
     ----------
@@ -30,14 +52,23 @@ def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_s
     Returns
     -------
     int
+        Recommended iteration stepsize for the video.
+    int
         Recommended framerate for the video.
+    int
+        Number of frames that will be in the video.
     """
     assert num_potential_frames >= num_desired_frames, "Number of potential frames should be greater than the number of desired frames."
+    assert max_secs >= min_secs, "Maximum number of seconds should be greater than or equal to the minimum number of seconds."
     assert num_desired_frames > 0, "Number of desired frames should be greater than 0."
 
-    iter_stepsize = num_potential_frames // num_desired_frames
+    iter_stepsize = np.ceil(num_potential_frames / num_desired_frames).astype(np.int32).item()
     fps = max(1, min(num_desired_frames // min_secs, num_desired_frames // max_secs))
-    return iter_stepsize, fps
+    num_frames = np.ceil(num_potential_frames / iter_stepsize).astype(np.int32).item()
+    if num_frames != num_desired_frames:
+        logger.info(f'Number of desired frames is not easy to compute given the number of potential frames. '
+                    f'Overestimating the number of frames to {num_frames}.')
+    return iter_stepsize, fps, num_frames
 
 
 def make_video(frames: list, save_path, fps: int = 60):
