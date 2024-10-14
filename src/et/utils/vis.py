@@ -4,7 +4,6 @@ import matplotlib
 
 from loguru import logger
 from typing import Tuple
-from moviepy.editor import VideoFileClip
 
 
 def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
