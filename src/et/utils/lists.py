@@ -1,4 +1,7 @@
 from collections.abc import Iterable
+from copy import deepcopy
+from treelib import Tree, Node
+
 
 def flatten_list(lst: Iterable) -> Iterable:
     """
@@ -26,3 +29,25 @@ def flatten_list(lst: Iterable) -> Iterable:
     for item in lst:
         result.extend(flatten_list(item))
     return result
+
+def print_tree(lst):
+    """
+    Pretty print an arbitrarily nested list as a tree structure.
+
+    Parameters
+    ----------
+    lst : list
+        A nested list of elements. The tree structure of the list can be arbitrarily complex.
+    """
+    def _recurse(node, lst):
+        for child in lst:
+            if isinstance(child, Iterable):
+                child_node = tree.create_node(f"L{node.data + 1}", data=node.data + 1, parent=node)
+                _recurse(child_node, child)
+            else:
+                tree.create_node(str(child), data=node.data + 1, parent=node)
+
+    tree, root = Tree(), Node(f"L{0}", data=0)  # data is the depth
+    tree.add_node(root)
+    _recurse(root, lst)
+    print(tree.show(stdout=False))
