@@ -6,6 +6,29 @@ from et.utils.pretty_print import color
 
 
 def timeit(f, trials=1):
+    """
+    Decorator to time a function. I stole these code snippets from some random Stack Overflow posts.
+
+    Example usage:
+    ```
+    import functools as ft
+    @ft.partial(timeit, trials=10)
+    def foo():
+        return sum([i for i in range(1000000)])
+    ```
+
+    Parameters
+    ----------
+    f : function
+        Function to time.
+    trials : int
+        Number of trials to run the function.
+
+    Returns
+    -------
+    timed : function
+        Decorated
+    """
     def timed(*args, **kw):
         result, times = None, []
         for _ in range(trials):
