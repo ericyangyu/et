@@ -1,7 +1,10 @@
-from collections.abc import Iterable
-from copy import deepcopy
+from collections.abc import Iterable, Callable
+from typing import TypeVar, Union
 from treelib import Tree, Node
+from operator import eq
 
+
+T = TypeVar("T")
 
 def flatten_list(lst: Iterable) -> Iterable:
     """
@@ -51,3 +54,30 @@ def print_tree(lst):
     tree.add_node(root)
     _recurse(root, lst)
     print(tree.show(stdout=False))
+
+def find_nested_index(lst: Iterable[T], target: T, eq_op : Callable = eq) -> Union[Iterable[int], None]:
+    """
+    Recursively finds the nested index of an element in an arbitrarily nested list. Stolen from GPT.
+
+    Parameters
+    ----------
+    lst : list
+        The list to search.
+    target : any
+        The element to search for.
+    eq_op : callable
+        The custom equality operator to use to compare elements. Defaults to the built-in Python equality operator.
+
+    Returns
+    -------
+    list
+        A list representing the nested index of the target element, or None if not found.
+    """
+    for i, item in enumerate(lst):
+        if isinstance(item, Iterable):
+            result = find_nested_index(item, target)
+            if result is not None:
+                return [i] + result
+        elif eq_op(item, target):
+            return [i]
+    return None
