@@ -1,10 +1,44 @@
 import numpy as np
 import ffmpeg
-import matplotlib
+import matplotlib.figure
 
 from loguru import logger
-from typing import Tuple
+from typing import Tuple, Dict, Any
 
+from prettytable import PrettyTable
+
+
+def pprint_table(data: Dict[Any, Dict[Any, Any]]) -> None:
+    """
+    Pretty print a 2-D table of data.
+
+    ```
+    data = {
+        'Category 1': {
+            'Metric 1': 1,
+        }
+    }
+    ```
+
+    Parameters
+    ----------
+    data : list
+        2-D list of data to pretty print. The shape is expected to be
+    """
+    # Get all listed metrics across methods
+    metrics = set()
+    for method in data:
+        metrics |= set(data[method].keys())
+    metrics = [''] + sorted(list(metrics))
+
+    t = PrettyTable(list(metrics))
+    for method in data:
+        row = [method] + [data[method][metric] if data[method].get(metric) is not None else '' for metric in metrics[1:]]
+        # Round floats by 3 decimal places
+        row = [round(x, 3) if isinstance(x, float) else x for x in row]
+        t.add_row(row)
+
+    logger.info('\n' + t.__repr__())
 
 def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
     """
