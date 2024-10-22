@@ -8,7 +8,9 @@ dependencies = [
     "pyyaml",
     "dotwiz",
     "ffmpeg-python",
-    "pyyaml"
+    "pyyaml",
+    "prettytable",
+    "treelib"
 ]
 dynamic = ["version"]
 
