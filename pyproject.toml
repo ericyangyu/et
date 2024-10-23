@@ -10,7 +10,10 @@ dependencies = [
     "ffmpeg-python",
     "pyyaml",
     "prettytable",
-    "treelib"
+    "treelib",
+    "matplotlib",
+    "wandb",
+    "tensorboard"
 ]
 dynamic = ["version"]
 
