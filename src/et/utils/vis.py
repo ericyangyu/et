@@ -7,8 +7,10 @@ from typing import Tuple, Dict, Any
 
 from prettytable import PrettyTable
 
+from et.utils.lists import remove_duplicates
 
-def pprint_table(data: Dict[Any, Dict[Any, Any]]) -> None:
+
+def pprint_table(data: Dict[Any, Dict[Any, Any]], sort_metrics: bool = True) -> None:
     """
     Pretty print a 2-D table of data.
 
@@ -24,14 +26,18 @@ def pprint_table(data: Dict[Any, Dict[Any, Any]]) -> None:
     ----------
     data : list
         2-D list of data to pretty print. The shape is expected to be
+
+    sort_metrics : bool
+        Whether to sort the metrics alphabetically.
     """
     # Get all listed metrics across methods
-    metrics = set()
-    for method in data:
-        metrics |= set(data[method].keys())
-    metrics = [''] + sorted(list(metrics))
+    metrics = []
+    for keys in data.values():
+        metrics += list(keys.keys())
+    metrics = remove_duplicates(metrics)
+    metrics = [''] + (sorted(metrics) if sort_metrics else list(metrics))
 
-    t = PrettyTable(list(metrics))
+    t = PrettyTable(metrics)
     for method in data:
         row = [method] + [data[method][metric] if data[method].get(metric) is not None else '' for metric in metrics[1:]]
         # Round floats by 3 decimal places

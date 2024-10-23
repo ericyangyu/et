@@ -1,5 +1,5 @@
 from collections.abc import Iterable, Callable
-from typing import TypeVar, Union
+from typing import TypeVar, Union, List
 from treelib import Tree, Node
 from operator import eq
 
@@ -32,6 +32,25 @@ def flatten_list(lst: Iterable) -> Iterable:
     for item in lst:
         result.extend(flatten_list(item))
     return result
+
+def remove_duplicates(lst: Iterable) -> List:
+    """
+    Remove duplicates from a 1D-list while preserving the order of the elements.
+    Taken from https://stackoverflow.com/questions/480214/how-do-i-remove-duplicates-from-a-list-while-preserving-order
+
+    Parameters
+    ----------
+    lst : list
+        A list of elements.
+
+    Returns
+    -------
+    list
+        A list of elements with duplicates removed.
+    """
+    seen = set()
+    seen_add = seen.add
+    return [x for x in lst if not (x in seen or seen_add(x))]
 
 def print_tree(lst):
     """
