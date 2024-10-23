@@ -13,7 +13,8 @@ dependencies = [
     "treelib",
     "matplotlib",
     "wandb",
-    "tensorboard"
+    "tensorboard",
+    "cyclopts"
 ]
 dynamic = ["version"]
 
