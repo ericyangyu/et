@@ -1,11 +1,12 @@
 import numpy as np
 import ffmpeg
 import matplotlib.figure
+import imageio
 
 from loguru import logger
-from typing import Tuple, Dict, Any
-
+from typing import Tuple, Dict, Any, Union
 from prettytable import PrettyTable
+from tqdm import tqdm
 
 from et.utils.lists import remove_duplicates
 
@@ -45,22 +46,6 @@ def pprint_table(data: Dict[Any, Dict[Any, Any]], sort_metrics: bool = True) -> 
         t.add_row(row)
 
     logger.info('\n' + t.__repr__())
-
-def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
-    """
-    Convert an mp4 video to a gif.
-
-    Parameters
-    ----------
-    mp4_path : str
-        Path to the mp4 video.
-    gif_path : str
-        Path to save the gif.
-    """
-    if gif_path is None:
-        gif_path = mp4_path.replace('.mp4', '.gif')
-    ffmpeg.input(mp4_path).output(gif_path).run()
-    logger.info(f'Converted {mp4_path} to {gif_path}.')
 
 def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_secs: int) -> Tuple[int, int, int]:
     """
@@ -109,10 +94,9 @@ def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_s
                     f'Overestimating the number of frames to {num_frames}.')
     return iter_stepsize, fps, num_frames
 
-
-def make_video(frames: list, save_path, fps: int = 60):
+def make_animation(frames: list, save_path, fps: int = 60):
     """
-    Make a video from a list of frames (RGB images).
+    Make an animation from a list of frames (RGB images).
 
     Parameters
     ----------
@@ -125,31 +109,24 @@ def make_video(frames: list, save_path, fps: int = 60):
     framerate : int
         Framerate of the video.
     """
-    def vidwrite(fn, images, framerate=60, vcodec='libx264'):
-        """
-        Stolen from: https://github.com/kkroening/ffmpeg-python/issues/246
-        """
-        if not isinstance(images, np.ndarray):
-            images = np.asarray(images)
-        n, height, width, channels = images.shape
-        process = (
-            ffmpeg
-            .input('pipe:', format='rawvideo', pix_fmt='rgb24', s='{}x{}'.format(width, height), r=framerate)
-            .output(fn, pix_fmt='yuv420p', vcodec=vcodec)
-            .overwrite_output()
-            .run_async(pipe_stdin=True)
-        )
-        for frame in images:
-            process.stdin.write(
-                frame
-                .astype(
-                    np.uint8)
-                .tobytes()
-            )
-        process.stdin.close()
-        process.wait()
+    imageio.mimsave(save_path, frames, fps=fps)
+    logger.info(f'Saved animation to {save_path}.')
 
-    vidwrite(save_path, frames, framerate=fps)
+def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
+    """
+    Convert an mp4 video to a gif.
+
+    Parameters
+    ----------
+    mp4_path : str
+        Path to the mp4 video.
+    gif_path : str
+        Path to save the gif.
+    """
+    if gif_path is None:
+        gif_path = mp4_path.replace('.mp4', '.gif')
+    ffmpeg.input(mp4_path).output(gif_path, loglevel='quiet').run()
+    logger.info(f'Converted {mp4_path} to {gif_path}.')
 
 def extract_frame(fig: matplotlib.figure.Figure) -> np.ndarray:
     """

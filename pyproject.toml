@@ -14,7 +14,8 @@ dependencies = [
     "matplotlib",
     "wandb",
     "tensorboard",
-    "cyclopts"
+    "cyclopts",
+    "jax",
 ]
 dynamic = ["version"]
 
