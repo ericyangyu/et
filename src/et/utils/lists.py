@@ -52,9 +52,26 @@ def remove_duplicates(lst: Iterable) -> List:
     seen_add = seen.add
     return [x for x in lst if not (x in seen or seen_add(x))]
 
-def print_tree(lst):
+def pprint_tree_level_sets(lst, return_str=False):
     """
-    Pretty print an arbitrarily nested list as a tree structure.
+    Pretty print an arbitrarily nested list as a tree structure with the level sets.
+
+    Example usage:
+    ```
+    pprint_tree(dfs(self.root), return_str=True)
+    ```
+
+    Output:
+    ```
+    L0
+    ├── L1
+    │   ├── L2
+    │   │   ├── L3
+    │   │   │   └── Node(-514.7217463886572)
+    │   │   └── Node(-591.2048596963268)
+    │   └── Node(-542.168163117856)
+    └── Node(-inf)
+    ```
 
     Parameters
     ----------
@@ -63,7 +80,7 @@ def print_tree(lst):
     """
     def _recurse(node, lst):
         for child in lst:
-            if isinstance(child, Iterable):
+            if not isinstance(child, str) and isinstance(child, Iterable):
                 child_node = tree.create_node(f"L{node.data + 1}", data=node.data + 1, parent=node)
                 _recurse(child_node, child)
             else:
@@ -72,6 +89,8 @@ def print_tree(lst):
     tree, root = Tree(), Node(f"L{0}", data=0)  # data is the depth
     tree.add_node(root)
     _recurse(root, lst)
+    if return_str:
+        return tree.show(stdout=False)
     print(tree.show(stdout=False))
 
 def find_nested_index(lst: Iterable[T], target: T, eq_op : Callable = eq) -> Union[Iterable[int], None]:
