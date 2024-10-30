@@ -2,6 +2,7 @@ import numpy as np
 import ffmpeg
 import matplotlib.figure
 import imageio
+from PrettyPrint import PrettyPrintTree
 
 from loguru import logger
 from typing import Tuple, Dict, Any, Union
@@ -46,6 +47,86 @@ def pprint_table(data: Dict[Any, Dict[Any, Any]], sort_metrics: bool = True) -> 
         t.add_row(row)
 
     logger.info('\n' + t.__repr__())
+
+def pprint_tree(tree, get_children: callable, get_value: callable, return_str=False, **kwargs):
+    """
+    Pretty print a tree using the PrettyPrintTree library (https://github.com/AharonSambol/PrettyPrintTree).
+
+    Example usage for this function:
+    ```
+    class Tree:
+    def __init__(self, value):
+        self.val = value
+        self.children = []
+
+    def add_child(self, child):
+        self.children.append(child)
+        return child
+
+    root_node = Tree(1)
+    root_node.children.append(...)
+    ...
+    pprint_tree(root_node, lambda node: node.children, lambda node: node.val)
+    ```
+
+    Output:
+    ```
+           Node(-inf)
+               |
+    Node(-542.168163117856)
+               |
+    Node(-591.2048596963268)
+               |
+    Node(-514.7217463886572)
+               |
+    Node(-502.3410730516834)
+               |
+    Node(-630.2486787544855)
+               |
+    Node(-543.6193324297493)
+               |
+    Node(-556.8119847096827)
+               |
+    Node(-568.5016699692871)
+               |
+    Node(-537.9230400261243)
+               |
+    Node(-552.2198651683074)
+    ```
+
+    Parameters
+    ----------
+    tree : Any
+        Tree to pretty print.
+    get_children : callable
+        Function to get the children of a node.
+    get_value : callable
+        Function to get the value of a node.
+    return_str : bool
+        Whether to return the string instead of printing it.
+    kwargs : dict
+        Additional arguments to pass to the PrettyPrintTree class.
+
+    Returns
+    -------
+    str | None
+        Pretty printed tree as a string if return_str is True, else None.
+    """
+    # Update any kwargs if necessary
+    match kwargs.get('orientation', None):
+        case 'vertical':
+            kwargs['orientation'] = PrettyPrintTree.Vertical
+        case 'horizontal':
+            kwargs['orientation'] = PrettyPrintTree.Horizontal
+        case _:
+            pass
+
+    if return_str:
+        kwargs['return_instead_of_print'] = True
+
+    pt = PrettyPrintTree(get_children, get_value, **kwargs)
+    return pt(tree)
+
 
 def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_secs: int) -> Tuple[int, int, int]:
     """

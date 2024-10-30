@@ -16,6 +16,7 @@ dependencies = [
     "tensorboard",
     "cyclopts",
     "jax",
+    "PrettyPrintTree",
 ]
 dynamic = ["version"]
 
