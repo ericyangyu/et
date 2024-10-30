@@ -4,7 +4,7 @@ from loguru import logger
 from wandb.sdk.wandb_run import Run
 
 
-def setup_wandb_run(run: Run, postfix: str = None):
+def setup_wandb_run(run: Run, postfix: str = None) -> str:
     """
     Set up the name of the run in wandb.
     The name will be in the format "mm.dd-hh:mm - run_id - postfix"

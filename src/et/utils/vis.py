@@ -48,7 +48,7 @@ def pprint_table(data: Dict[Any, Dict[Any, Any]], sort_metrics: bool = True) -> 
 
     logger.info('\n' + t.__repr__())
 
-def pprint_tree(tree, get_children: callable, get_value: callable, return_str=False, **kwargs):
+def pprint_tree(tree, get_children: callable, get_value: callable, return_str=False, **kwargs: Dict[str, Any]) -> Union[str, None]:
     """
     Pretty print a tree using the PrettyPrintTree library (https://github.com/AharonSambol/PrettyPrintTree).
 
