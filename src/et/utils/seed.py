@@ -38,4 +38,5 @@ def set_env_seed(env: Env | List[Env], seed: int):
         _env.reset(seed=seed)
         _env.action_space.seed(seed)
     logger.info(f"Fixed env seed to {seed}")
+    return env
 
