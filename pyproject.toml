@@ -17,6 +17,7 @@ dependencies = [
     "cyclopts",
     "jax",
     "PrettyPrintTree",
+    "imageio"
 ]
 dynamic = ["version"]
 
