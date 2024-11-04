@@ -2,6 +2,7 @@ import numpy as np
 import random
 import os
 
+from gymnasium.vector import VectorEnv
 from jax import Array
 from loguru import logger
 from typing import List, Union, Tuple, Iterable
@@ -28,14 +29,12 @@ def set_seed(seed: int = 0, use_torch: bool = False, use_jax: bool = False) -> A
         import jax.random as jr
         return jr.key(seed)
 
-def set_env_seed(env: Env | List[Env], seed: int):
+def set_env_seed(env: Env | VectorEnv, seed: int):
     """
     Set the gymnasium env seed
     """
-    if isinstance(env, Env):
-        env = [env]
-    for _env in env:
-        _env.reset(seed=seed)
-        _env.action_space.seed(seed)
+    env.reset(seed=seed)
+    env.action_space.seed(seed)
     logger.info(f"Fixed env seed to {seed}")
+    return env
 
