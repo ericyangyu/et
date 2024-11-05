@@ -3,13 +3,12 @@ import random
 import os
 
 from gymnasium.vector import VectorEnv
-from jax import Array
 from loguru import logger
 from typing import List, Union, Tuple, Iterable
 from gymnasium import Env
 
 
-def set_seed(seed: int = 0, use_torch: bool = False, use_jax: bool = False) -> Array:
+def set_seed(seed: int = 0, use_torch: bool = False):
     """
     https://wandb.ai/sauravmaheshkar/RSNA-MICCAI/reports/How-to-Set-Random-Seeds-in-PyTorch-and-Tensorflow--VmlldzoxMDA2MDQy
     """
@@ -25,9 +24,6 @@ def set_seed(seed: int = 0, use_torch: bool = False, use_jax: bool = False) -> A
         # When running on the CuDNN backend, two further options must be set
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
-    if use_jax:
-        import jax.random as jr
-        return jr.key(seed)
 
 def set_env_seed(env: Env | VectorEnv, seed: int):
     """
