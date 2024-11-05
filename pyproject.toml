@@ -8,7 +8,16 @@ dependencies = [
     "pyyaml",
     "dotwiz",
     "ffmpeg-python",
-    "pyyaml"
+    "pyyaml",
+    "prettytable",
+    "treelib",
+    "matplotlib",
+    "wandb",
+    "tensorboard",
+    "cyclopts",
+    "jax",
+    "PrettyPrintTree",
+    "imageio"
 ]
 dynamic = ["version"]
 
