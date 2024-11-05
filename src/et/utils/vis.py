@@ -5,7 +5,7 @@ import imageio
 from PrettyPrint import PrettyPrintTree
 
 from loguru import logger
-from typing import Tuple, Dict, Any
+from typing import Tuple, Dict, Any, Union
 from prettytable import PrettyTable
 from tqdm import tqdm
 
