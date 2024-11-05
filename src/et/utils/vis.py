@@ -4,7 +4,6 @@ import matplotlib.figure
 
 from loguru import logger
 from typing import Tuple, Dict, Any
-
 from prettytable import PrettyTable
 
 
@@ -60,8 +59,9 @@ def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_s
     """
     Recommend an iteration stepsize and framerate for a video. Minimum 1 fps. This should be used like
     ```
-    iter_stepsize, fps = recommend_fps(num_iterations, 10, 5, 10)
-    for i in range(iter_stepsize, num_iterations + iter_stepsize, iter_stepsize):
+    iter_stepsize, fps, num_frames = recommend_fps(num_iterations, 10, 5, 10)
+    for i in tqdm(range(iter_stepsize, num_iterations + iter_stepsize, iter_stepsize),
+                  desc='Generating video frames', total=num_frames):
         subset_data = data[:i]
         ...
     make_video(frames, 'video.mp4', fps=fps)
