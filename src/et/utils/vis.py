@@ -191,8 +191,8 @@ def make_animation(frames: list, save_path, fps: int = 60):
     framerate : int
         Framerate of the video.
     """
-    # There might be an issue with fps, so multiply by 10. Source: https://stackoverflow.com/questions/61282938/imageio-individual-frame-rates
-    imageio.mimsave(save_path, frames, fps=fps*10)
+    # There might be an issue with fps, so could multiply by 10. Source: https://stackoverflow.com/questions/61282938/imageio-individual-frame-rates
+    imageio.mimsave(save_path, frames, fps=fps)
     logger.info(f'Saved animation to {save_path}.')
 
 def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
@@ -208,7 +208,7 @@ def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
     """
     if gif_path is None:
         gif_path = mp4_path.replace('.mp4', '.gif')
-    ffmpeg.input(mp4_path).output(gif_path, loglevel='quiet').run()
+    ffmpeg.input(mp4_path).output(gif_path, loglevel='quiet').run(overwrite_output=True)
     logger.info(f'Converted {mp4_path} to {gif_path}.')
 
 def extract_frame(fig: matplotlib.figure.Figure) -> np.ndarray:
