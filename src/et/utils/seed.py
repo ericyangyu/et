@@ -8,11 +8,12 @@ from typing import List, Union, Tuple, Iterable
 from gymnasium import Env
 
 
-def set_seed(seed: int = 0, use_torch: bool = False):
+def set_seed(seed: int = 0, use_torch: bool = False, verbose=True):
     """
     https://wandb.ai/sauravmaheshkar/RSNA-MICCAI/reports/How-to-Set-Random-Seeds-in-PyTorch-and-Tensorflow--VmlldzoxMDA2MDQy
     """
-    logger.info(f"Fixing seed to {seed}")
+    if verbose:
+        logger.info(f"Fixing seed to {seed}")
     np.random.seed(seed)
     random.seed(seed)
     # Set a_cands fixed value for the hash seed
