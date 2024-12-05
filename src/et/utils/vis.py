@@ -192,7 +192,8 @@ def make_animation(frames: list, save_path, fps: int = 60):
         Framerate of the video.
     """
     # There might be an issue with fps, so could multiply by 10. Source: https://stackoverflow.com/questions/61282938/imageio-individual-frame-rates
-    imageio.mimsave(save_path, frames, fps=fps)
+    # imageio.mimsave(save_path, frames, fps=fps)
+    imageio.mimsave(save_path, frames, fps=fps*10)
     logger.info(f'Saved animation to {save_path}.')
 
 def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
