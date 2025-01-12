@@ -30,7 +30,6 @@ def set_env_seed(env: Env | VectorEnv, seed: int):
     """
     Set the gymnasium env seed
     """
-    env.reset(seed=seed)
     env.action_space.seed(seed)
     logger.info(f"Fixed env seed to {seed}")
     return env
