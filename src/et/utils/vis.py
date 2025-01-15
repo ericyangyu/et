@@ -27,7 +27,15 @@ def pprint_table(data: Dict[Any, Dict[Any, Any]], sort_metrics: bool = True) -> 
     Parameters
     ----------
     data : list
-        2-D list of data to pretty print. The shape is expected to be
+        2-D list of data to pretty print. The shape is expected to be like
+
+        pprint_table({'ER Stats':
+            {
+                'Replay Capacity': train_cfg.buffer_size,
+                'Oldest Policy Age': oldest_policy_age,
+                'ReplayRatio': replay_ratio,
+            }
+        })
 
     sort_metrics : bool
         Whether to sort the metrics alphabetically.
