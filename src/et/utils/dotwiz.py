@@ -43,5 +43,10 @@ def convert_to_dotwiz(data: dict | Any, **kwargs: Any) -> DotWiz:
         try:
             data = data.__dict__
         except:
-            raise ValueError("Input data must be a dictionary or an object with a __dict__ attribute.")
-    return DotWiz(**dict(data, **kwargs))
+            return data
+
+    # Do this recursively in case it's a nested object
+    return_dict = {}
+    for key, value in data.items():
+        return_dict[key] = convert_to_dotwiz(value)
+    return DotWiz(**dict(return_dict, **kwargs))
