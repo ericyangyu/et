@@ -17,6 +17,7 @@ dependencies = [
     "tensorboard",
     "cyclopts",
     "PrettyPrintTree",
+    "ipdb",
     "imageio[ffmpeg]"
 ]
 dynamic = ["version"]
