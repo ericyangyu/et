@@ -18,7 +18,8 @@ dependencies = [
     "cyclopts",
     "PrettyPrintTree",
     "ipdb",
-    "imageio[ffmpeg]"
+    "imageio[ffmpeg]",
+    "gymnasium"
 ]
 dynamic = ["version"]
 
