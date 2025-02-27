@@ -1,11 +1,10 @@
-import numpy as np
-import random
 import os
+import random
 
+import numpy as np
+from gymnasium import Env
 from gymnasium.vector import VectorEnv
 from loguru import logger
-from typing import List, Union, Tuple, Iterable
-from gymnasium import Env
 
 
 def set_seed(seed: int = 0, use_torch: bool = False, verbose=True):
@@ -26,6 +25,7 @@ def set_seed(seed: int = 0, use_torch: bool = False, verbose=True):
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
 
+
 def set_env_seed(env: Env | VectorEnv, seed: int):
     """
     Set the gymnasium env seed
@@ -34,4 +34,3 @@ def set_env_seed(env: Env | VectorEnv, seed: int):
     env.reset(seed=seed)
     logger.info(f"Fixed env seed to {seed}")
     return env
-
