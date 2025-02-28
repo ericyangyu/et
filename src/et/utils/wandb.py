@@ -27,4 +27,3 @@ def setup_wandb_run(run: Run, postfix: str = None) -> str:
     run.name = name
     logger.info(f"Run name set to {name}")
     return run_dir
-

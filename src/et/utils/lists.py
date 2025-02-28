@@ -1,10 +1,11 @@
 from collections.abc import Iterable, Callable
-from typing import TypeVar, Union, List
-from treelib import Tree, Node
 from operator import eq
+from typing import TypeVar, Union, List
 
+from treelib import Tree, Node
 
 T = TypeVar("T")
+
 
 def flatten_list(lst: Iterable) -> Iterable:
     """
@@ -33,6 +34,7 @@ def flatten_list(lst: Iterable) -> Iterable:
         result.extend(flatten_list(item))
     return result
 
+
 def remove_duplicates(lst: Iterable) -> List:
     """
     Remove duplicates from a 1D-list while preserving the order of the elements.
@@ -51,6 +53,7 @@ def remove_duplicates(lst: Iterable) -> List:
     seen = set()
     seen_add = seen.add
     return [x for x in lst if not (x in seen or seen_add(x))]
+
 
 def pprint_tree_level_sets(lst, return_str=False):
     """
@@ -78,6 +81,7 @@ def pprint_tree_level_sets(lst, return_str=False):
     lst : list
         A nested list of elements. The tree structure of the list can be arbitrarily complex.
     """
+
     def _recurse(node, lst):
         for child in lst:
             if not isinstance(child, str) and isinstance(child, Iterable):
@@ -93,7 +97,8 @@ def pprint_tree_level_sets(lst, return_str=False):
         return tree.show(stdout=False)
     print(tree.show(stdout=False))
 
-def find_nested_index(lst: Iterable[T], target: T, eq_op : Callable = eq) -> Union[Iterable[int], None]:
+
+def find_nested_index(lst: Iterable[T], target: T, eq_op: Callable = eq) -> Union[Iterable[int], None]:
     """
     Recursively finds the nested index of an element in an arbitrarily nested list. Stolen from GPT.
 

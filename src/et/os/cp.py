@@ -1,6 +1,7 @@
+import errno
 import os
 import shutil
-import errno
+
 
 def cp_r(src, dst):
     """
@@ -25,6 +26,7 @@ def cp_r(src, dst):
             shutil.copy(src, dst)
         else:
             raise
+
 
 def symlink(src, dst):
     """

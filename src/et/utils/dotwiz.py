@@ -1,6 +1,7 @@
 from typing import Any
 
 import yaml
+
 from dotwiz import DotWiz
 
 
@@ -21,6 +22,7 @@ def load_yaml(filepath: str, **kwargs: Any) -> DotWiz:
         A DotWiz dictionary containing the yaml file data.
     """
     return convert_to_dotwiz(yaml.load(open(filepath, 'r'), Loader=yaml.FullLoader), **kwargs)
+
 
 def convert_to_dotwiz(data: dict | Any, **kwargs: Any) -> DotWiz:
     """

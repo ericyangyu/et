@@ -1,4 +1,5 @@
 import time
+
 import numpy as np
 from loguru import logger
 
@@ -29,6 +30,7 @@ def timeit(f, trials=1):
     timed : function
         Decorated
     """
+
     def timed(*args, **kw):
         result, times = None, []
         for _ in range(trials):

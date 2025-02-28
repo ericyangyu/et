@@ -22,6 +22,7 @@ def set_logger_format():
     for level_name in levels:
         logger.level(level_name, icon=level_name[0])
 
+
 def setup_eric_env():
     """
     Set up Eric's preferred environment for any general application. Recommended to put this at the very start of any

@@ -1,13 +1,12 @@
-import numpy as np
-import ffmpeg
-import matplotlib.figure
-import imageio
-from PrettyPrint import PrettyPrintTree
-
-from loguru import logger
 from typing import Tuple, Dict, Any, Union
+
+import ffmpeg
+import imageio
+import matplotlib.figure
+import numpy as np
+from PrettyPrint import PrettyPrintTree
+from loguru import logger
 from prettytable import PrettyTable
-from tqdm import tqdm
 
 from et.utils.lists import remove_duplicates
 
@@ -49,14 +48,17 @@ def pprint_table(data: Dict[Any, Dict[Any, Any]], sort_metrics: bool = True) -> 
 
     t = PrettyTable(metrics)
     for method in data:
-        row = [method] + [data[method][metric] if data[method].get(metric) is not None else '' for metric in metrics[1:]]
+        row = [method] + [data[method][metric] if data[method].get(metric) is not None else '' for metric in
+                          metrics[1:]]
         # Round floats by 3 decimal places
         row = [round(x, 3) if isinstance(x, float) else x for x in row]
         t.add_row(row)
 
     logger.info('\n' + t.__repr__())
 
-def pprint_tree(tree, get_children: callable, get_value: callable, return_str=False, **kwargs: Dict[str, Any]) -> Union[str, None]:
+
+def pprint_tree(tree, get_children: callable, get_value: callable, return_str=False, **kwargs: Dict[str, Any]) -> Union[
+    str, None]:
     """
     Pretty print a tree using the PrettyPrintTree library (https://github.com/AharonSambol/PrettyPrintTree).
 
@@ -184,6 +186,7 @@ def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_s
                     f'Overestimating the number of frames to {num_frames}.')
     return iter_stepsize, fps, num_frames
 
+
 def make_animation(frames: list, save_path, fps: int = 60):
     """
     Make an animation from a list of frames (RGB images).
@@ -201,8 +204,9 @@ def make_animation(frames: list, save_path, fps: int = 60):
     """
     # There might be an issue with fps, so could multiply by 10. Source: https://stackoverflow.com/questions/61282938/imageio-individual-frame-rates
     # imageio.mimsave(save_path, frames, fps=fps)
-    imageio.mimsave(save_path, frames, fps=fps*10)
+    imageio.mimsave(save_path, frames, fps=fps * 10)
     logger.info(f'Saved animation to {save_path}.')
+
 
 def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
     """
@@ -219,6 +223,7 @@ def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
         gif_path = mp4_path.replace('.mp4', '.gif')
     ffmpeg.input(mp4_path).output(gif_path, loglevel='quiet').run(overwrite_output=True)
     logger.info(f'Converted {mp4_path} to {gif_path}.')
+
 
 def extract_frame(fig: matplotlib.figure.Figure) -> np.ndarray:
     """

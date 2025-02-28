@@ -1,7 +1,7 @@
 [project]
 name = "et"
 authors = [
-    {name = "Eric Yu", email = "erict12321@gmail.com"},
+    { name = "Eric Yu", email = "erict12321@gmail.com" },
 ]
 dependencies = [
     "loguru",
