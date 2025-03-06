@@ -174,9 +174,11 @@ def recommend_fps(num_potential_frames, num_desired_frames, min_secs: int, max_s
     int
         Number of frames that will be in the video.
     """
-    assert num_potential_frames >= num_desired_frames, "Number of potential frames should be greater than the number of desired frames."
+    # assert num_potential_frames >= num_desired_frames, "Number of potential frames should be greater than the number of desired frames."
     assert max_secs >= min_secs, "Maximum number of seconds should be greater than or equal to the minimum number of seconds."
     assert num_desired_frames > 0, "Number of desired frames should be greater than 0."
+
+    num_potential_frames = max(num_potential_frames, num_desired_frames)
 
     iter_stepsize = np.ceil(num_potential_frames / num_desired_frames).astype(np.int32).item()
     fps = max(1, min(num_desired_frames // min_secs, num_desired_frames // max_secs))
@@ -203,8 +205,8 @@ def make_animation(frames: list, save_path, fps: int = 60):
         Framerate of the video.
     """
     # There might be an issue with fps, so could multiply by 10. Source: https://stackoverflow.com/questions/61282938/imageio-individual-frame-rates
-    # imageio.mimsave(save_path, frames, fps=fps)
-    imageio.mimsave(save_path, frames, fps=fps * 10)
+    imageio.mimsave(save_path, frames, fps=fps)
+    # imageio.mimsave(save_path, frames, fps=fps * 10)
     logger.info(f'Saved animation to {save_path}.')
 
 
