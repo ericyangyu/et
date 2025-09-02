@@ -204,10 +204,12 @@ def make_animation(frames: list, save_path, fps: int = 60):
     framerate : int
         Framerate of the video.
     """
-    # There might be an issue with fps, so could multiply by 10. Source: https://stackoverflow.com/questions/61282938/imageio-individual-frame-rates
-    imageio.mimsave(save_path, frames, fps=fps)
-    # imageio.mimsave(save_path, frames, fps=fps * 10)
-    logger.info(f'Saved animation to {save_path}.')
+    kwargs = {}
+    if str(save_path).lower().endswith(".gif"):
+        kwargs["loop"] = 0   # 0 means infinite repeat, 1 means play once, 2 means repeat twice, etc.
+
+    imageio.mimsave(save_path, frames, fps=fps, **kwargs)
+    logger.info(f"Saved animation to {save_path}.")
 
 
 def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
@@ -229,7 +231,7 @@ def convert_mp4_to_gif(mp4_path: str, gif_path: str = None):
 
 def extract_frame(fig: matplotlib.figure.Figure) -> np.ndarray:
     """
-    Extract a frame from a canvas.
+    Extract the current contents of a Matplotlib Figure as an RGB numpy array.
 
     Parameters
     ----------
@@ -239,8 +241,20 @@ def extract_frame(fig: matplotlib.figure.Figure) -> np.ndarray:
     Returns
     -------
     np.ndarray
-        RGB image frame extracted from the canvas as a numpy array.
+        RGB image of shape (H, W, 3), dtype=uint8.
     """
+    # Make sure the figure is rendered
     fig.canvas.draw()
-    width, height = (fig.get_size_inches() * fig.get_dpi()).astype(np.int32)
-    return np.fromstring(fig.canvas.tostring_rgb(), dtype='uint8').reshape(height, width, 3)
+
+    # Get true pixel size (respects DPI)
+    width, height = fig.canvas.get_width_height()
+
+    # Preferred modern API: RGBA buffer
+    rgba = np.asarray(fig.canvas.buffer_rgba())
+    rgba = rgba.reshape((height, width, 4))
+
+    # Drop alpha channel
+    rgb = rgba[..., :3]
+
+    # Return a copy so it is not tied to the canvas buffer
+    return rgb.copy()
